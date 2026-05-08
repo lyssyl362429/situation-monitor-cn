@@ -78,7 +78,9 @@ MAX_ARTICLES_PER_SOURCE = 8
 def fetch_rss(name: str, url: str) -> list[dict]:
     """Fetch and parse an RSS feed, return list of article dicts."""
     try:
-        feed = feedparser.parse(url)
+        resp = requests.get(url, timeout=15, headers={"User-Agent": "Mozilla/5.0"})
+        resp.raise_for_status()
+        feed = feedparser.parse(resp.text)
         articles = []
         for entry in feed.entries[:MAX_ARTICLES_PER_SOURCE]:
             articles.append({
