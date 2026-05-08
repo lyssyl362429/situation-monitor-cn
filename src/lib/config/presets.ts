@@ -69,6 +69,13 @@ export const PRESETS: Record<string, Preset> = {
 		description: 'Just the essentials - map, news, and markets',
 		panels: ['map', 'politics', 'markets']
 	},
+	'chinese-watcher': {
+		id: 'chinese-watcher',
+		name: '中文观察',
+		icon: '🇨🇳',
+		description: '中文新闻与AI资讯监控',
+		panels: ['chinese', 'aiextra', 'ai', 'tech', 'map', 'politics']
+	},
 	everything: {
 		id: 'everything',
 		name: 'Everything',
@@ -98,7 +105,9 @@ export const PRESETS: Record<string, Preset> = {
 			'leaders',
 			'intel',
 			'correlation',
-			'narrative'
+			'narrative',
+			'chinese',
+			'aiextra'
 		]
 	}
 };

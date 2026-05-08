@@ -50,6 +50,26 @@ export const FEEDS: Record<NewsCategory, FeedSource[]> = {
 		{ name: 'OpenAI Blog', url: 'https://openai.com/news/rss.xml' },
 		{ name: 'ArXiv AI', url: 'https://rss.arxiv.org/rss/cs.AI' }
 	],
+	chinese: [
+		{ name: '36氪', url: 'https://36kr.com/feed' },
+		{ name: '虎嗅', url: 'https://www.huxiu.com/rss/0.xml' },
+		{ name: '新浪科技', url: 'https://feed.mix.sina.com.cn/api/roll/get?pageid=153&lid=2509&nums=20' },
+		{ name: '澎湃新闻', url: 'https://m.thepaper.cn/rss/news.xml' },
+		{ name: '联合早报', url: 'https://www.zaobao.com/news/feed' },
+		{ name: 'BBC中文网', url: 'https://feeds.bbci.co.uk/zhongwen/simp/rss.xml' },
+		{ name: '知乎日报', url: 'https://daily.zhihu.com/rss' },
+		{ name: '科技早报', url: 'https://feedx.net/rss/keji.xml' }
+	],
+	aiextra: [
+		{ name: 'TechCrunch AI', url: 'https://techcrunch.com/category/artificial-intelligence/feed/' },
+		{ name: 'VentureBeat AI', url: 'https://venturebeat.com/category/ai/feed/' },
+		{ name: 'MIT AI', url: 'https://news.mit.edu/topic/mitartificial-intelligence2/rss' },
+		{ name: 'Google AI Blog', url: 'https://ai.googleblog.com/feeds/posts/default' },
+		{ name: 'DeepMind', url: 'https://deepmind.google/blog/rss.xml' },
+		{ name: 'Hugging Face', url: 'https://huggingface.co/blog/feed.xml' },
+		{ name: 'Anthropic Blog', url: 'https://www.anthropic.com/feed.xml' },
+		{ name: 'Meta AI', url: 'https://ai.meta.com/blog/rss.xml' }
+	],
 	intel: [
 		{ name: 'CSIS', url: 'https://www.csis.org/analysis/feed' },
 		{ name: 'Brookings', url: 'https://www.brookings.edu/feed/' }

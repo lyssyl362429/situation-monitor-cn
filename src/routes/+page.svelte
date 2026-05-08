@@ -65,7 +65,7 @@
 	// Data fetching
 	async function loadNews() {
 		// Set loading for all categories
-		const categories = ['politics', 'tech', 'finance', 'gov', 'ai', 'intel'] as const;
+		const categories = ['politics', 'tech', 'finance', 'gov', 'ai', 'intel', 'chinese', 'aiextra'] as const;
 		categories.forEach((cat) => news.setLoading(cat, true));
 
 		try {

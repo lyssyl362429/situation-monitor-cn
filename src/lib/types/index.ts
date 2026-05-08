@@ -3,7 +3,7 @@
 /**
  * News feed category
  */
-export type NewsCategory = 'politics' | 'tech' | 'finance' | 'gov' | 'ai' | 'intel';
+export type NewsCategory = 'politics' | 'tech' | 'finance' | 'gov' | 'ai' | 'intel' | 'chinese' | 'aiextra';
 
 /**
  * A news item from any source (RSS, GDELT, etc.)

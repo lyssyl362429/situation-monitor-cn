@@ -91,19 +91,24 @@ function transformGdeltArticle(
  */
 export async function fetchCategoryNews(category: NewsCategory): Promise<NewsItem[]> {
 	// Build query from category keywords (GDELT requires OR queries in parentheses)
-	const categoryQueries: Record<NewsCategory, string> = {
+	const categoryQueries: Record<string, string> = {
 		politics: '(politics OR government OR election OR congress)',
 		tech: '(technology OR software OR startup OR "silicon valley")',
 		finance: '(finance OR "stock market" OR economy OR banking)',
 		gov: '("federal government" OR "white house" OR congress OR regulation)',
 		ai: '("artificial intelligence" OR "machine learning" OR AI OR ChatGPT)',
-		intel: '(intelligence OR security OR military OR defense)'
+		intel: '(intelligence OR security OR military OR defense)',
+		chinese: '(中国 OR 科技 OR 经济 OR 人工智能 OR 政治 OR 市场)',
+		aiextra: '("large language model" OR "generative AI" OR "AI model" OR "neural network" OR "deep learning" OR "AI safety" OR "autonomous")'
 	};
 
 	try {
-		// Add English language filter and timespan for fresh results
-		const baseQuery = categoryQueries[category];
-		const fullQuery = `${baseQuery} sourcelang:english`;
+		// Add language filter for English sources (Chinese sources use Chinese)
+		const baseQuery = categoryQueries[category] || categoryQueries.politics;
+		const fullQuery =
+			category === 'chinese'
+				? `${baseQuery} sourcelang:chinese`
+				: `${baseQuery} sourcelang:english`;
 		// Build the raw GDELT URL with timespan=7d to get recent articles
 		const gdeltUrl = `https://api.gdeltproject.org/api/v2/doc/doc?query=${fullQuery}&timespan=7d&mode=artlist&maxrecords=20&format=json&sort=date`;
 
@@ -146,11 +151,11 @@ export async function fetchCategoryNews(category: NewsCategory): Promise<NewsIte
 }
 
 /** All news categories in fetch order */
-const NEWS_CATEGORIES: NewsCategory[] = ['politics', 'tech', 'finance', 'gov', 'ai', 'intel'];
+const NEWS_CATEGORIES: NewsCategory[] = ['politics', 'tech', 'finance', 'gov', 'ai', 'intel', 'chinese', 'aiextra'];
 
 /** Create an empty news result object */
 function createEmptyNewsResult(): Record<NewsCategory, NewsItem[]> {
-	return { politics: [], tech: [], finance: [], gov: [], ai: [], intel: [] };
+	return { politics: [], tech: [], finance: [], gov: [], ai: [], intel: [], chinese: [], aiextra: [] };
 }
 
 /**

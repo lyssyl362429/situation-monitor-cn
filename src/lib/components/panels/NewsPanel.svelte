@@ -2,7 +2,7 @@
 	import { Panel, NewsItem } from '$lib/components/common';
 	import type { NewsCategory } from '$lib/types';
 	import type { PanelId } from '$lib/config';
-	import { politicsNews, techNews, financeNews, govNews, aiNews, intelNews } from '$lib/stores';
+	import { politicsNews, techNews, financeNews, govNews, aiNews, intelNews, chineseNews, aiextraNews } from '$lib/stores';
 
 	interface Props {
 		category: NewsCategory;
