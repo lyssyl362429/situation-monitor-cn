@@ -59,14 +59,17 @@ GDELT_QUERIES = {
     "chinese": {
         "query": "(中国 OR 科技 OR 经济 OR 人工智能 OR 政治 OR 市场)",
         "lang": "chinese",
+        "label": "GDELT中国",
     },
     "ai": {
         "query": '("artificial intelligence" OR "machine learning" OR "large language model" OR "generative AI" OR "AI" OR "deep learning")',
         "lang": "english",
+        "label": "GDELT_AI",
     },
     "tech": {
         "query": '(technology OR "silicon valley" OR startup OR software OR tech)',
         "lang": "english",
+        "label": "GDELT科技",
     },
 }
 
