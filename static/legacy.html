@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Situation Monitor</title>
+<style>
+body { font-family: -apple-system, sans-serif; background: #0d1117; color: #c9d1d9; margin: 0; padding: 20px; }
+.panels { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 16px; }
+.panel { background: #161b22; border: 1px solid #30363d; border-radius: 8px; padding: 16px; }
+.panel h2 { margin: 0 0 8px; font-size: 16px; color: #f0f6fc; }
+.panel ul { margin: 0; padding-left: 16px; }
+.panel li { margin-bottom: 6px; font-size: 14px; }
+</style>
+</head>
+<body>
+<h1 class="title">Situation Monitor</h1>
+<div id="status">Status: Connected</div>
+<button id="refreshBtn">Refresh</button>
+<div class="panels">
+  <div class="panel" data-panel="politics"><h2>Politics</h2><ul><li>Loading...</li></ul></div>
+  <div class="panel" data-panel="tech"><h2>Tech</h2><ul><li>Loading...</li></ul></div>
+  <div class="panel" data-panel="finance"><h2>Finance</h2><ul><li>Loading...</li></ul></div>
+</div>
+<script>
+document.getElementById('refreshBtn').onclick = function() {
+  document.getElementById('status').textContent = 'Status: Refreshing...';
+  setTimeout(function() {
+    document.getElementById('status').textContent = 'Status: Connected';
+  }, 1000);
+};
+</script>
+</body>
+</html>
