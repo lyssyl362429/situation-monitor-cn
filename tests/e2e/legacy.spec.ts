@@ -1,31 +1,21 @@
 import { test, expect } from '@playwright/test';
 
 test.describe('Situation Monitor - Legacy App', () => {
-	test('legacy app loads correctly', async ({ page }) => {
+	test.beforeEach(async ({ page }) => {
 		await page.goto('/legacy.html');
+		await page.waitForSelector('[data-testid="app-status"]');
+	});
 
-		// Check page title
+	test('legacy app loads correctly', async ({ page }) => {
 		await expect(page).toHaveTitle('Situation Monitor');
-
-		// Check header is visible
-		await expect(page.locator('h1.title')).toHaveText('Situation Monitor');
-
-		// Check status element exists
-		await expect(page.locator('#status')).toBeVisible();
-
-		// Check panels exist
-		await expect(page.locator('[data-panel="politics"]')).toBeVisible();
-		await expect(page.locator('[data-panel="tech"]')).toBeVisible();
-		await expect(page.locator('[data-panel="finance"]')).toBeVisible();
+		await expect(page.locator('[data-testid="app-title"]')).toHaveText('Situation Monitor');
+		await expect(page.locator('[data-testid="app-status"]')).toBeVisible();
+		await expect(page.locator('[data-testid="panel-politics"]')).toBeVisible();
+		await expect(page.locator('[data-testid="panel-tech"]')).toBeVisible();
+		await expect(page.locator('[data-testid="panel-finance"]')).toBeVisible();
 	});
 
 	test('legacy app can refresh', async ({ page }) => {
-		await page.goto('/legacy.html');
-
-		// Wait for initial load
-		await page.waitForSelector('#status');
-
-		// The refresh button should exist
-		await expect(page.locator('#refreshBtn')).toBeVisible();
+		await expect(page.locator('[data-testid="refresh-btn"]')).toBeVisible();
 	});
 });
