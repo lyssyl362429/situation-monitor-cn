@@ -14,13 +14,13 @@ body { font-family: -apple-system, sans-serif; background: #0d1117; color: #c9d1
 </style>
 </head>
 <body>
-<h1 class="title">Situation Monitor</h1>
-<div id="status">Status: Connected</div>
-<button id="refreshBtn">Refresh</button>
+<h1 class="title" data-testid="app-title">Situation Monitor</h1>
+<div id="status" data-testid="app-status">Status: Connected</div>
+<button id="refreshBtn" data-testid="refresh-btn">Refresh</button>
 <div class="panels">
-  <div class="panel" data-panel="politics"><h2>Politics</h2><ul><li>Loading...</li></ul></div>
-  <div class="panel" data-panel="tech"><h2>Tech</h2><ul><li>Loading...</li></ul></div>
-  <div class="panel" data-panel="finance"><h2>Finance</h2><ul><li>Loading...</li></ul></div>
+  <div class="panel" data-panel="politics" data-testid="panel-politics"><h2>Politics</h2><ul><li>Loading...</li></ul></div>
+  <div class="panel" data-panel="tech" data-testid="panel-tech"><h2>Tech</h2><ul><li>Loading...</li></ul></div>
+  <div class="panel" data-panel="finance" data-testid="panel-finance"><h2>Finance</h2><ul><li>Loading...</li></ul></div>
 </div>
 <script>
 document.getElementById('refreshBtn').onclick = function() {
