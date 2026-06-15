@@ -20,6 +20,8 @@ from email.mime.multipart import MIMEMultipart
 from smtplib import SMTP_SSL, SMTPAuthenticationError
 from typing import Optional
 
+import time
+
 import feedparser
 import requests
 
@@ -40,19 +42,16 @@ GDELT_URL = "https://api.gdeltproject.org/api/v2/doc/doc"
 
 CHINESE_RSS_FEEDS = [
     ("36氪", "https://36kr.com/feed"),
-    ("虎嗅", "https://www.huxiu.com/rss/0.xml"),
-    ("澎湃新闻", "https://m.thepaper.cn/rss/news.xml"),
-    ("联合早报", "https://www.zaobao.com/news/feed"),
+    ("IT之家", "https://www.ithome.com/rss/"),
     ("BBC中文网", "https://feeds.bbci.co.uk/zhongwen/simp/rss.xml"),
 ]
 
 AI_RSS_FEEDS = [
     ("TechCrunch AI", "https://techcrunch.com/category/artificial-intelligence/feed/"),
     ("VentureBeat AI", "https://venturebeat.com/category/ai/feed/"),
-    ("MIT AI", "https://news.mit.edu/topic/mitartificialintelligence2/rss"),
-    ("Google AI Blog", "https://ai.googleblog.com/feeds/posts/default"),
-    ("Anthropic Blog", "https://www.anthropic.com/feed.xml"),
-    ("Hugging Face Blog", "https://huggingface.co/blog/feed.xml"),
+    ("OpenAI Blog", "https://openai.com/blog/rss.xml"),
+    ("Google Blog", "https://blog.google/rss/"),
+    ("Google DeepMind", "https://deepmind.google/blog/rss.xml"),
 ]
 
 GDELT_QUERIES = {
@@ -98,32 +97,40 @@ def fetch_rss(name: str, url: str) -> list[dict]:
         return []
 
 
-def fetch_gdelt(query: str, lang: str, label: str) -> list[dict]:
-    """Fetch news from GDELT API."""
-    try:
-        params = {
-            "query": f"{query} sourcelang:{lang}",
-            "timespan": "1d",
-            "mode": "artlist",
-            "maxrecords": 15,
-            "format": "json",
-            "sort": "date",
-        }
-        resp = requests.get(GDELT_URL, params=params, timeout=30)
-        resp.raise_for_status()
-        data = resp.json()
-        articles = []
-        for article in data.get("articles", []):
-            articles.append({
-                "title": article.get("title", ""),
-                "link": article.get("url", ""),
-                "source": article.get("domain", label),
-                "date": article.get("seendate", ""),
-            })
-        return articles
-    except Exception as e:
-        print(f"  [warn] GDELT fetch failed for {label}: {e}", file=sys.stderr)
-        return []
+def fetch_gdelt(query: str, lang: str, label: str, retries: int = 3) -> list[dict]:
+    """Fetch news from GDELT API with retry on rate limit."""
+    params = {
+        "query": f"{query} sourcelang:{lang}",
+        "timespan": "1d",
+        "mode": "artlist",
+        "maxrecords": 15,
+        "format": "json",
+        "sort": "date",
+    }
+    for attempt in range(retries):
+        try:
+            resp = requests.get(GDELT_URL, params=params, timeout=30)
+            if resp.status_code == 429:
+                wait = 10 * (attempt + 1)
+                print(f"  [warn] GDELT rate limited for {label}, waiting {wait}s (attempt {attempt + 1}/{retries})...", file=sys.stderr)
+                time.sleep(wait)
+                continue
+            resp.raise_for_status()
+            data = resp.json()
+            articles = []
+            for article in data.get("articles", []):
+                articles.append({
+                    "title": article.get("title", ""),
+                    "link": article.get("url", ""),
+                    "source": article.get("domain", label),
+                    "date": article.get("seendate", ""),
+                })
+            return articles
+        except Exception as e:
+            print(f"  [warn] GDELT fetch failed for {label}: {e}", file=sys.stderr)
+            return []
+    print(f"  [warn] GDELT fetch failed for {label}: exhausted retries (429)", file=sys.stderr)
+    return []
 
 
 def fetch_all_news() -> dict:
@@ -142,9 +149,11 @@ def fetch_all_news() -> dict:
 
     print("📡 Fetching GDELT (Chinese)...")
     gdelt_chinese = fetch_gdelt(**GDELT_QUERIES["chinese"])
+    time.sleep(5)
 
     print("📡 Fetching GDELT (AI)...")
     gdelt_ai = fetch_gdelt(**GDELT_QUERIES["ai"])
+    time.sleep(5)
 
     print("📡 Fetching GDELT (Tech)...")
     gdelt_tech = fetch_gdelt(**GDELT_QUERIES["tech"])
